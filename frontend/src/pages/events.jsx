@@ -1,6 +1,6 @@
-
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Header from "../Header";
 
 function Events() {
   const navigate = useNavigate();
@@ -26,14 +26,18 @@ function Events() {
 
   return (
     <div>
-      <h1>Welcome, {name}!</h1>
+      <Header />
 
-      <h2>Upcoming Events</h2>
-      <p>Discover events happening around campus.</p>
+      <main style={{ padding: 32 }}>
+        <h1>Welcome, {name}!</h1>
 
-      <button onClick={handleLogout}>
-        Logout
-      </button>
+        <h2>Upcoming Events</h2>
+        <p>Discover events happening around campus.</p>
+
+        <button onClick={handleLogout}>
+          Logout
+        </button>
+      </main>
     </div>
   );
 }
