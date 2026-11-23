@@ -1,12 +1,14 @@
-
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import "./Login.css";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const notice = location.state?.message;
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -14,7 +16,7 @@ function Login() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/login.php",
+        "/api/login.php",
         {
           method: "POST",
           headers: {
@@ -26,12 +28,10 @@ function Login() {
 
       const data = await response.json();
       if (response.ok && data.success) {
-        //save user to localStorage
         localStorage.setItem("ticket", data.ticket);
         localStorage.setItem("name", data.name);
         localStorage.setItem("email", email);
 
-        //redirect to events page
         navigate("/events");
       } else {
         setError(data.message || "Invalid Email or PIN");
@@ -42,30 +42,57 @@ function Login() {
   }
 
   return (
-    <div>
-      <h1>CampusConnect Login</h1>
+    <div className="login-page">
+      <header className="site-header">
+        <div className="brand">CampusConnect</div>
+        <nav className="site-nav">
+          <span className="nav-link active">Discover</span>
+          <span className="nav-link">Create Event</span>
+        </nav>
+      </header>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+      <main className="login-main">
+        <section className="login-card">
+          <h1>
+            Welcome to
+            <br />
+            CampusConnect
+          </h1>
 
-        <input
-          type="password"
-          placeholder="PIN"
-          value={pin}
-          onChange={(e) => setPin(e.target.value)}
-          required
-        />
+          <h2>Log In</h2>
 
-        <button type="submit">Login</button>
-      </form>
+          <form className="login-form" onSubmit={handleLogin}>
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+              required
+            />
 
-      {error && <p>{error}</p>}
+            <input
+              type="password"
+              placeholder="Password"
+              value={pin}
+              onChange={(e) => setPin(e.target.value)}
+              autoComplete="current-password"
+              required
+            />
+
+            <button type="submit">Log in</button>
+
+            {notice && <p className="login-notice">{notice}</p>}
+            {error && <p className="login-error">{error}</p>}
+          </form>
+
+          <hr className="login-divider" />
+
+          <p className="signup-prompt">
+            Don't have an account? <Link to="/signup">Sign up</Link>
+          </p>
+        </section>
+      </main>
     </div>
   );
 }
