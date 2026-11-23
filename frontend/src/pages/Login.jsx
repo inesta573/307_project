@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 function Login() {
@@ -7,6 +7,8 @@ function Login() {
   const [pin, setPin] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const notice = location.state?.message;
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -80,13 +82,14 @@ function Login() {
 
             <button type="submit">Log in</button>
 
+            {notice && <p className="login-notice">{notice}</p>}
             {error && <p className="login-error">{error}</p>}
           </form>
 
           <hr className="login-divider" />
 
           <p className="signup-prompt">
-            Don't have an account? <strong>Sign up</strong>
+            Don't have an account? <Link to="/signup">Sign up</Link>
           </p>
         </section>
       </main>

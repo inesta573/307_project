@@ -132,8 +132,17 @@
   font-size: 14px;
 }
 
-.signup-prompt strong {
+.signup-prompt a {
+  color: inherit;
   font-weight: 700;
+  text-decoration: none;
+}
+
+.login-notice {
+  margin: 0;
+  text-align: center;
+  color: #067647;
+  font-size: 14px;
 }
 
 @media (max-width: 640px) {
