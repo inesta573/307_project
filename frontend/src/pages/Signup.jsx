@@ -21,7 +21,7 @@ function Signup() {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/api/signup.php", {
+      const response = await fetch("/api/signup.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

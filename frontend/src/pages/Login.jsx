@@ -16,7 +16,7 @@ function Login() {
 
     try {
       const response = await fetch(
-        "http://localhost:8000/api/login.php",
+        "/api/login.php",
         {
           method: "POST",
           headers: {
