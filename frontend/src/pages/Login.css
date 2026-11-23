@@ -95,6 +95,21 @@
   border-color: #8d97a3;
 }
 
+.show-password {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.show-password input {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
 .login-form button {
   align-self: center;
   margin-top: 10px;

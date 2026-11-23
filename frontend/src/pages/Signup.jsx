@@ -8,12 +8,19 @@ function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   async function handleSignup(e) {
     e.preventDefault();
     setError("");
+
+    if (pin !== confirmPin) {
+      setError("Passwords do not match");
+      return;
+    }
 
     if (!mcgillEmail.test(email.trim())) {
       setError("Email must be a mail.mcgill.ca address");
@@ -82,13 +89,31 @@ function Signup() {
             />
 
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               autoComplete="new-password"
               required
             />
+
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Confirm password"
+              value={confirmPin}
+              onChange={(e) => setConfirmPin(e.target.value)}
+              autoComplete="new-password"
+              required
+            />
+
+            <label className="show-password">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={(e) => setShowPassword(e.target.checked)}
+              />
+              Show password
+            </label>
 
             <button type="submit">Sign up</button>
 
