@@ -5,8 +5,7 @@ header("Access-Control-Allow-Origin: http://localhost:5173");
 header("Content-Type: application/json");
 
 
-$conn = new mysqli("localhost", "root", "", "db");
-
+require __DIR__ . "/db.php";
 if ($conn->connect_error) {
     http_response_code(500);
     echo json_encode(["error" => "Database connection failed"]);
