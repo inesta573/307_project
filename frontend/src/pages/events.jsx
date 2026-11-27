@@ -24,9 +24,13 @@ function Events() {
       try {
         const response = await fetch("/api/events.php");
         const data = await response.json();
+        if (!response.ok || !Array.isArray(data.events)) {
+          setError(data.message || "Could not retrieve events");
+          return;
+        }
         setEvents(data.events);
       } catch (err) {
-        setError(err.message);
+        setError(err.message || "Could not retrieve events");
       } finally {
         setLoading(false);
       }
@@ -67,6 +71,10 @@ function Events() {
         <h1>Welcome, {name}!</h1>
         <h2>Discover Events</h2>
         <p>Find events around campus, put yourself out there, and get ready to connect.</p>
+
+        {loading && <p>Events are loading.</p>}
+        {error && <p>{error}</p>}
+        {!loading && !error && events.length === 0 && <p>There are no upcoming events.</p>}
 
         {!loading && !error && Object.entries(groupedEvents).map(
           ([category, categoryEvents]) => (
