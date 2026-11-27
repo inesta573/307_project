@@ -117,18 +117,6 @@ button.profile-avatar {
   gap: 8px;
 }
 
-.profile-preview {
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid #e6e2de;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1a1a1a;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
 .profile-edit {
   height: 40px;
   padding: 0 16px;

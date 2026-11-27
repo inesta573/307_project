@@ -67,7 +67,6 @@ function Profile() {
   const [saved, setSaved] = useState(() => readStoredProfile() || emptyProfile);
   const [draft, setDraft] = useState(() => readStoredProfile() || emptyProfile);
   const [editing, setEditing] = useState(false);
-  const [previewing, setPreviewing] = useState(false);
   const [interestDraft, setInterestDraft] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -226,9 +225,7 @@ function Profile() {
   }
 
   const initial = (name || email || "?").trim().charAt(0).toUpperCase();
-  const subtitle = draft.program
-    ? [draft.studyYear, draft.program].filter(Boolean).join(" · ")
-    : "Add your program";
+  const headline = [draft.studyYear, draft.program, draft.faculty].filter(Boolean).join(" · ") || "McGill student";
 
   return (
     <div className="profile-page">
@@ -274,41 +271,28 @@ function Profile() {
               />
             </div>
             <div className="profile-identity">
-              <h2>{name || "Student"}{previewing && draft.pronouns ? ` · ${draft.pronouns}` : ""}</h2>
-              <p>{previewing ? [draft.studyYear, draft.program, draft.faculty].filter(Boolean).join(" · ") || "McGill student" : subtitle}</p>
-              {!previewing && <p>0 hosted · 0 attended</p>}
+              <h2>{name || "Student"}{draft.pronouns ? ` · ${draft.pronouns}` : ""}</h2>
+              <p>{headline}</p>
             </div>
             <div className="profile-actions">
-              {previewing ? (
-                <button type="button" className="profile-preview" onClick={() => setPreviewing(false)}>
-                  Close preview
-                </button>
-              ) : editing ? (
+              {editing ? (
                 <>
                   <button type="button" className="profile-cancel" onClick={cancelEditing}>
                     Cancel
-                  </button>
-                  <button type="button" className="profile-preview" onClick={() => setPreviewing(true)}>
-                    Preview
                   </button>
                   <button type="submit" form="profile-form" className="profile-edit" disabled={saving}>
                     {saving ? "Saving" : "Save"}
                   </button>
                 </>
               ) : (
-                <>
-                  <button type="button" className="profile-preview" onClick={() => setPreviewing(true)}>
-                    Preview
-                  </button>
-                  <button type="button" className="profile-edit" onClick={startEditing}>
-                    Edit Profile
-                  </button>
-                </>
+                <button type="button" className="profile-edit" onClick={startEditing}>
+                  Edit Profile
+                </button>
               )}
             </div>
           </div>
 
-          {previewing ? (
+          {!editing ? (
             <div className="profile-read">
               <div className="profile-stats">
                 <div><strong>0</strong><span>Hosted</span></div>
