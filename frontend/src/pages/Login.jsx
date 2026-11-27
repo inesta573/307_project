@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import "../components/Header.css";
 import "./Login.css";
 
 function Login() {
@@ -44,22 +45,18 @@ function Login() {
   return (
     <div className="login-page">
       <header className="site-header">
-        <div className="brand">CampusConnect</div>
-        <nav className="site-nav">
-          <span className="nav-link active">Discover</span>
-          <span className="nav-link">Create Event</span>
-        </nav>
+        <div className="site-header-inner">
+          <Link to="/login" className="site-logo">CampusConnect</Link>
+          <nav className="site-nav">
+            <Link to="/signup">Sign up</Link>
+          </nav>
+        </div>
       </header>
 
       <main className="login-main">
         <section className="login-card">
-          <h1>
-            Welcome to
-            <br />
-            CampusConnect
-          </h1>
-
-          <h2>Log In</h2>
+          <h1>Welcome back.</h1>
+          <p className="login-intro">Sign in with your McGill email.</p>
 
           <form className="login-form" onSubmit={handleLogin}>
             <input
