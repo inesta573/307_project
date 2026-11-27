@@ -227,6 +227,14 @@ function Profile() {
   const initial = (name || email || "?").trim().charAt(0).toUpperCase();
   const headline = [draft.studyYear, draft.program, draft.faculty].filter(Boolean).join(" · ") || "McGill student";
 
+  function handleLogout() {
+    localStorage.removeItem("ticket");
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    localStorage.removeItem("profile");
+    navigate("/login", { replace: true });
+  }
+
   return (
     <div className="profile-page">
       <Header />
@@ -275,6 +283,9 @@ function Profile() {
               <p>{headline}</p>
             </div>
             <div className="profile-actions">
+              <button type="button" className="profile-cancel" onClick={handleLogout}>
+                Logout
+              </button>
               {editing ? (
                 <>
                   <button type="button" className="profile-cancel" onClick={cancelEditing}>
@@ -434,5 +445,4 @@ function Profile() {
     </div>
   );
 }
-
 export default Profile;
