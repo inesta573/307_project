@@ -28,10 +28,9 @@
 
 .profile-card {
   background: #ffffff;
-  border: 1px solid #ece7e2;
-  border-radius: 18px;
+  border: 1px solid #e4dfd6;
+  border-radius: 0;
   padding: 28px 28px 32px;
-  box-shadow: 0 1px 2px rgba(26, 26, 26, 0.04);
 }
 
 .profile-head {
@@ -39,7 +38,7 @@
   align-items: center;
   gap: 16px;
   padding-bottom: 22px;
-  border-bottom: 1px solid #ece7e2;
+  border-bottom: 1px solid #e4dfd6;
 }
 
 .profile-photo {
@@ -59,7 +58,7 @@
   overflow: hidden;
   border: none;
   border-radius: 50%;
-  background: #c81e3a;
+  background: #ed1b2f;
   color: #ffffff;
   font-size: 28px;
   font-weight: 700;
@@ -83,7 +82,7 @@ button.profile-avatar {
 .profile-photo-action {
   border: none;
   background: transparent;
-  color: #6b7280;
+  color: #ed1b2f;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
@@ -100,13 +99,16 @@ button.profile-avatar {
 
 .profile-identity h2 {
   margin: 0;
-  font-size: 20px;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 32px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
 }
 
 .profile-identity p {
-  margin: 2px 0 0;
-  color: #6b7280;
-  font-size: 14px;
+  margin: 6px 0 0;
+  color: #171717;
+  font-size: 15px;
 }
 
 .profile-actions {
@@ -120,8 +122,8 @@ button.profile-avatar {
   height: 40px;
   padding: 0 16px;
   border: none;
-  border-radius: 8px;
-  background: #c81e3a;
+  border-radius: 0;
+  background: #ed1b2f;
   color: #ffffff;
   font-size: 14px;
   font-weight: 700;
@@ -138,7 +140,7 @@ button.profile-avatar {
   padding: 0 8px;
   border: none;
   background: transparent;
-  color: #6b7280;
+  color: #171717;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -235,7 +237,6 @@ button.profile-avatar {
   width: 96px;
   height: 96px;
   font-size: 36px;
-  box-shadow: 0 0 0 6px #fde8ec;
 }
 
 .profile-read {
