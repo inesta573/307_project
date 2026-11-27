@@ -64,6 +64,7 @@ function Events() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [filter, setFilter] = useState("All");
 
   // Check login and retrieve events
   useEffect(() => {
@@ -106,6 +107,18 @@ function Events() {
     return groups;
   }, {});
 
+  const preferredFilters = ["Sports", "Clubs", "Study", "Music", "Arts", "Food"];
+  const filterNames = [
+    "All",
+    ...preferredFilters.filter((name) => groupedEvents[name]),
+    ...Object.keys(groupedEvents).filter((name) => !preferredFilters.includes(name))
+  ];
+  const visibleGroups = filter === "All"
+    ? groupedEvents
+    : Object.fromEntries(
+        Object.entries(groupedEvents).filter(([category]) => category === filter)
+      );
+
   return (
     <div className="events-page">
       <Header />
@@ -117,13 +130,29 @@ function Events() {
           Find events around campus, put yourself out there, and get ready to connect.
         </p>
 
+        {!loading && !error && events.length > 0 && (
+          <div className="event-filters">
+            {filterNames.map((name) => (
+              <button
+                key={name}
+                type="button"
+                className={filter === name ? "event-filter is-selected" : "event-filter"}
+                aria-pressed={filter === name}
+                onClick={() => setFilter(name)}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        )}
+
         {loading && <p className="events-status">Events are loading.</p>}
         {error && <p className="events-status events-status-error">{error}</p>}
         {!loading && !error && events.length === 0 && (
           <p className="events-status">There are no upcoming events.</p>
         )}
 
-        {!loading && !error && highlightEvents.length > 0 && (
+        {!loading && !error && filter === "All" && highlightEvents.length > 0 && (
           <section className="event-category">
             <h2>{highlightTitle}</h2>
 
@@ -135,7 +164,7 @@ function Events() {
           </section>
         )}
 
-        {!loading && !error && Object.entries(groupedEvents).map(
+        {!loading && !error && Object.entries(visibleGroups).map(
           ([category, categoryEvents]) => (
             <section key={category} className="event-category">
               <h2>{category}</h2>
