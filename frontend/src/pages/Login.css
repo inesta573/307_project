@@ -1,8 +1,13 @@
 .login-page {
   min-height: 100vh;
-  background: #f3f5f7;
-  color: #1c2430;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #f7f6f2;
+  color: #171717;
+  font-family: Manrope, system-ui, sans-serif;
+}
+
+.login-page button,
+.login-page input {
+  font-family: inherit;
 }
 
 .site-header {
@@ -53,6 +58,22 @@
   padding: 52px 48px 36px;
 }
 
+.login-card .login-title {
+  margin: 0;
+  text-align: left;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(44px, 6vw, 64px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.login-intro {
+  margin: 16px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
 .login-card h1 {
   margin: 0;
   text-align: center;
@@ -73,6 +94,7 @@
   flex-direction: column;
   align-items: stretch;
   gap: 16px;
+  margin-top: 32px;
 }
 
 .login-form input {
@@ -189,7 +211,7 @@
     padding: 32px 20px 24px;
   }
 
-  .login-card h1 {
-    font-size: 28px;
+  .login-card .login-title {
+    font-size: 44px;
   }
 }

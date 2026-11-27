@@ -55,7 +55,7 @@ function Login() {
 
       <main className="login-main">
         <section className="login-card">
-          <h1>Welcome back.</h1>
+          <h1 className="login-title">Welcome back.</h1>
           <p className="login-intro">Sign in with your McGill email.</p>
 
           <form className="login-form" onSubmit={handleLogin}>
