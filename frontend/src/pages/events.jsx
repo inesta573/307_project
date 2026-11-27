@@ -59,7 +59,6 @@ function EventCard({ event }) {
 
 function Events() {
   const navigate = useNavigate();
-  const name = localStorage.getItem("name");
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -124,20 +123,19 @@ function Events() {
       <Header />
 
       <main className="events-main">
-        <p className="events-welcome">Welcome, {name}</p>
-        <h1>Discover Events</h1>
-        <p className="events-intro">
-          Find events around campus, put yourself out there, and get ready to connect.
-        </p>
+        <p className="events-label">Montréal / Campus life</p>
+        <h1>What's happening on campus.</h1>
+        <p className="events-intro">Your guide to life beyond the lecture hall.</p>
 
         {!loading && !error && events.length > 0 && (
-          <div className="event-filters">
+          <div className="event-filters" role="tablist" aria-label="Event categories">
             {filterNames.map((name) => (
               <button
                 key={name}
                 type="button"
+                role="tab"
                 className={filter === name ? "event-filter is-selected" : "event-filter"}
-                aria-pressed={filter === name}
+                aria-selected={filter === name}
                 onClick={() => setFilter(name)}
               >
                 {name}
