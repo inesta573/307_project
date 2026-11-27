@@ -276,7 +276,7 @@ function Profile() {
             <div className="profile-identity">
               <h2>{name || "Student"}{previewing && draft.pronouns ? ` · ${draft.pronouns}` : ""}</h2>
               <p>{previewing ? [draft.studyYear, draft.program, draft.faculty].filter(Boolean).join(" · ") || "McGill student" : subtitle}</p>
-              <p>0 hosted · 0 attended</p>
+              {!previewing && <p>0 hosted · 0 attended</p>}
             </div>
             <div className="profile-actions">
               {previewing ? (
@@ -310,13 +310,26 @@ function Profile() {
 
           {previewing ? (
             <div className="profile-read">
-              <p>{draft.bio || "No bio yet."}</p>
-              <div className="profile-chips">
-                {(draft.interests.length ? draft.interests : ["No interests yet."]).map((interest) => (
-                  <span className="profile-chip" key={interest}>{interest}</span>
-                ))}
+              <div className="profile-stats">
+                <div><strong>0</strong><span>Hosted</span></div>
+                <div><strong>0</strong><span>Attended</span></div>
               </div>
-              <p>{email}</p>
+              <div>
+                <h3>About</h3>
+                <p>{draft.bio || "No bio yet."}</p>
+              </div>
+              <div>
+                <h3>Interests</h3>
+                <div className="profile-chips">
+                  {(draft.interests.length ? draft.interests : ["No interests yet."]).map((interest) => (
+                    <span className="profile-chip" key={interest}>{interest}</span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <h3>Contact</h3>
+                <p>{email}</p>
+              </div>
             </div>
           ) : (
           <form id="profile-form" className="profile-form" onSubmit={saveProfile}>

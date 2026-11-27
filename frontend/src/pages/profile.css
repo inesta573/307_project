@@ -244,16 +244,61 @@ button.profile-avatar {
   color: #067647;
 }
 
+.profile-card:has(.profile-read) .profile-avatar {
+  width: 96px;
+  height: 96px;
+  font-size: 36px;
+  box-shadow: 0 0 0 6px #fde8ec;
+}
+
 .profile-read {
   display: grid;
-  gap: 14px;
+  gap: 22px;
   padding-top: 22px;
   font-size: 16px;
   line-height: 1.5;
 }
 
+.profile-read h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9ca3af;
+}
+
 .profile-read p {
   margin: 0;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.profile-stats div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #f6f4f1;
+}
+
+.profile-stats strong {
+  font-size: 28px;
+}
+
+.profile-stats span {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.profile-read .profile-chip {
+  background: #fde8ec;
+  color: #9f1239;
+  font-weight: 600;
 }
 
 @media (max-width: 720px) {
