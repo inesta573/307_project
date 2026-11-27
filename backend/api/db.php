@@ -16,6 +16,8 @@ if (is_readable($envFile)) {
     }
 }
 
+mysqli_report(MYSQLI_REPORT_OFF);
+
 $conn = new mysqli(
     "127.0.0.1",
     "cs307-user",
