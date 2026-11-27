@@ -197,16 +197,17 @@ button.profile-avatar {
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
-  border-radius: 999px;
-  background: #f6f4f1;
-  color: #1a1a1a;
+  border: 1px solid #e4dfd6;
+  border-radius: 0;
+  background: transparent;
+  color: #171717;
   font-size: 14px;
 }
 
 .profile-chip button {
   border: none;
   background: transparent;
-  color: #6b7280;
+  color: #171717;
   cursor: pointer;
   padding: 0;
   font-size: 16px;
@@ -226,11 +227,11 @@ button.profile-avatar {
 }
 
 .profile-message.error {
-  color: #b42318;
+  color: #ed1b2f;
 }
 
 .profile-message.saved {
-  color: #067647;
+  color: #171717;
 }
 
 .profile-card:has(.profile-read) .profile-avatar {
@@ -249,10 +250,11 @@ button.profile-avatar {
 
 .profile-read h3 {
   margin: 0 0 8px;
-  font-size: 13px;
-  letter-spacing: 0.06em;
+  color: #ed1b2f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #9ca3af;
 }
 
 .profile-read p {
@@ -270,22 +272,26 @@ button.profile-avatar {
   flex-direction: column;
   gap: 2px;
   padding: 16px 18px;
-  border-radius: 14px;
-  background: #f6f4f1;
+  border: 1px solid #e4dfd6;
+  border-radius: 0;
+  background: transparent;
 }
 
 .profile-stats strong {
-  font-size: 28px;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 1;
 }
 
 .profile-stats span {
-  color: #6b7280;
+  color: #171717;
   font-size: 14px;
 }
 
 .profile-read .profile-chip {
-  background: #fde8ec;
-  color: #9f1239;
+  background: transparent;
+  color: #171717;
   font-weight: 600;
 }
 
