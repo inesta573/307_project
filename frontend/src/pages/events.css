@@ -100,54 +100,55 @@
 }
 
 .event-card {
-  flex: 0 0 280px;
+  flex: 0 0 min(300px, 78%);
   scroll-snap-align: start;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow:
-    0 1px 2px rgba(40, 24, 16, 0.04),
-    0 8px 24px rgba(40, 24, 16, 0.06);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.event-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(40, 24, 16, 0.1);
+  min-width: 0;
 }
 
 .event-media {
-  height: 168px;
-  background: #f3e6e4;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #eceae4;
 }
 
-.event-media img {
+.event-media img,
+.event-media-fallback {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.event-media-fallback {
-  height: 100%;
-  background: linear-gradient(160deg, #f8ece9 0%, #e7cfc9 100%);
-}
-
 .event-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px 16px 18px;
+  padding-top: 14px;
 }
 
-.event-body h3 {
+.event-kicker {
+  display: flex;
+  gap: 10px;
   margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  color: #ed1b2f;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.event-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.event-title-row h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .event-arrow {
@@ -161,19 +162,40 @@
 }
 
 .event-description {
-  margin: 0;
-  color: #5c564f;
-  font-size: 14px;
-  line-height: 1.4;
-  white-space: nowrap;
+  display: -webkit-box;
+  margin: 8px 0 0;
   overflow: hidden;
-  text-overflow: ellipsis;
+  color: #3f3f3f;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-.event-meta {
-  margin: 4px 0 0;
-  color: #8a8178;
-  font-size: 13px;
+.event-facts {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 0;
+}
+
+.event-facts div {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 8px;
+}
+
+.event-facts dt {
+  color: #6f6a62;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.event-facts dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 @media (max-width: 640px) {
