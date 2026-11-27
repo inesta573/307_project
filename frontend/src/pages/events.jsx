@@ -1,6 +1,6 @@
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import "./events.css";
 
@@ -81,6 +81,74 @@ function EventCard({ event }) {
         </dl>
       </div>
     </article>
+  );
+}
+
+function EventCarousel({ title, events }) {
+  const scrollerRef = useRef(null);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  function updateArrows() {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  }
+
+  useEffect(() => {
+    updateArrows();
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    el.addEventListener("scroll", updateArrows, { passive: true });
+    const observer = new ResizeObserver(updateArrows);
+    observer.observe(el);
+
+    return () => {
+      el.removeEventListener("scroll", updateArrows);
+      observer.disconnect();
+    };
+  }, [events]);
+
+  function scrollByCard(direction) {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector(".event-card");
+    const distance = card ? card.getBoundingClientRect().width + 28 : el.clientWidth * 0.8;
+    el.scrollBy({ left: direction * distance, behavior: "smooth" });
+  }
+
+  return (
+    <section className="event-category">
+      <div className="event-category-head">
+        <h2>{title}</h2>
+        <div className="event-category-nav">
+          <button
+            type="button"
+            aria-label={`Previous ${title} events`}
+            onClick={() => scrollByCard(-1)}
+            disabled={!canPrev}
+          >
+            <EventArrow />
+          </button>
+          <button
+            type="button"
+            aria-label={`Next ${title} events`}
+            onClick={() => scrollByCard(1)}
+            disabled={!canNext}
+          >
+            <EventArrow />
+          </button>
+        </div>
+      </div>
+
+      <div className="event-carousel" ref={scrollerRef}>
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -178,28 +246,12 @@ function Events() {
         )}
 
         {!loading && !error && filter === "All" && highlightEvents.length > 0 && (
-          <section className="event-category">
-            <h2>{highlightTitle}</h2>
-
-            <div className="event-carousel">
-              {highlightEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
-          </section>
+          <EventCarousel title={highlightTitle} events={highlightEvents} />
         )}
 
         {!loading && !error && Object.entries(visibleGroups).map(
           ([category, categoryEvents]) => (
-            <section key={category} className="event-category">
-              <h2>{category}</h2>
-
-              <div className="event-carousel">
-                {categoryEvents.map((event) => (
-                  <EventCard key={event.id} event={event} />
-                ))}
-              </div>
-            </section>
+            <EventCarousel key={category} title={category} events={categoryEvents} />
           )
         )}
       </main>

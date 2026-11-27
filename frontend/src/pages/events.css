@@ -81,22 +81,59 @@
 }
 
 .event-category {
-  margin-top: 36px;
+  margin-top: 48px;
 }
 
-.event-category > h2 {
-  margin: 0 0 14px;
-  font-size: 20px;
-  font-weight: 600;
+.event-category-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.event-category h2 {
+  margin: 0;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(28px, 3vw, 36px);
+  font-weight: 400;
   letter-spacing: -0.02em;
+}
+
+.event-category-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.event-category-nav button {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid #171717;
+  background: transparent;
+  color: #171717;
+  cursor: pointer;
+}
+
+.event-category-nav button:first-child .event-arrow {
+  transform: scaleX(-1);
+}
+
+.event-category-nav button:disabled {
+  border-color: #d9d3c8;
+  color: #d9d3c8;
+  cursor: default;
 }
 
 .event-carousel {
   display: flex;
-  gap: 16px;
+  gap: 28px;
+  max-width: 100%;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
-  padding: 2px 2px 12px;
+  scrollbar-width: thin;
 }
 
 .event-card {
