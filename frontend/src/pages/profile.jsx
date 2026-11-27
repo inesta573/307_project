@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import "./profile.css";
@@ -24,7 +24,21 @@ const emptyProfile = {
   pronouns: "",
   bio: "",
   interests: [],
+  avatar: "",
 };
+
+function profileFrom(source) {
+  return {
+    ...emptyProfile,
+    program: source?.program || "",
+    studyYear: source?.studyYear || "",
+    faculty: source?.faculty || "",
+    pronouns: source?.pronouns || "",
+    bio: source?.bio || "",
+    interests: Array.isArray(source?.interests) ? source.interests : [],
+    avatar: typeof source?.avatar === "string" ? source.avatar : "",
+  };
+}
 
 function readStoredProfile() {
   const email = localStorage.getItem("email") || "";
@@ -33,11 +47,7 @@ function readStoredProfile() {
     if (!stored || stored.email !== email) {
       return null;
     }
-    return {
-      ...emptyProfile,
-      ...stored,
-      interests: Array.isArray(stored.interests) ? stored.interests : [],
-    };
+    return profileFrom(stored);
   } catch {
     return null;
   }
@@ -61,6 +71,7 @@ function Profile() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [saving, setSaving] = useState(false);
+  const photoInput = useRef(null);
 
   useEffect(() => {
     const ticket = localStorage.getItem("ticket");
@@ -90,14 +101,7 @@ function Profile() {
           setError(data.message || "Could not load your profile. The database tunnel may be closed.");
           return;
         }
-        const profile = {
-          program: data.profile.program || "",
-          studyYear: data.profile.studyYear || "",
-          faculty: data.profile.faculty || "",
-          pronouns: data.profile.pronouns || "",
-          bio: data.profile.bio || "",
-          interests: data.profile.interests || [],
-        };
+        const profile = profileFrom(data.profile);
         setName(data.profile.name || "");
         setEmail(data.profile.email || "");
         setSaved(profile);
@@ -118,6 +122,40 @@ function Profile() {
 
   function updateField(field, value) {
     setDraft((current) => ({ ...current, [field]: value }));
+  }
+
+  function choosePhoto(event) {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) {
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      setError("Choose an image file");
+      return;
+    }
+
+    const objectUrl = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      const size = 256;
+      const canvas = document.createElement("canvas");
+      canvas.width = size;
+      canvas.height = size;
+      const context = canvas.getContext("2d");
+      const scale = Math.max(size / image.width, size / image.height);
+      const width = image.width * scale;
+      const height = image.height * scale;
+      context.drawImage(image, (size - width) / 2, (size - height) / 2, width, height);
+      URL.revokeObjectURL(objectUrl);
+      updateField("avatar", canvas.toDataURL("image/jpeg", 0.85));
+      setError("");
+    };
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      setError("Could not read that image");
+    };
+    image.src = objectUrl;
   }
 
   function addInterest() {
@@ -165,6 +203,7 @@ function Profile() {
           pronouns: draft.pronouns,
           bio: draft.bio,
           interests: JSON.stringify(draft.interests),
+          avatar: draft.avatar,
         }),
       });
       const data = await response.json();
@@ -172,14 +211,7 @@ function Profile() {
         setError(data.message || "Could not save your profile");
         return;
       }
-      const profile = {
-        program: data.profile.program || "",
-        studyYear: data.profile.studyYear || "",
-        faculty: data.profile.faculty || "",
-        pronouns: data.profile.pronouns || "",
-        bio: data.profile.bio || "",
-        interests: data.profile.interests || [],
-      };
+      const profile = profileFrom(data.profile);
       setSaved(profile);
       setDraft(profile);
       writeStoredProfile(profile);
@@ -204,7 +236,42 @@ function Profile() {
         <h1>My Profile</h1>
         <section className="profile-card">
           <div className="profile-head">
-            <div className="profile-avatar" aria-hidden="true">{initial}</div>
+            <div className="profile-photo">
+              {editing ? (
+                <button
+                  type="button"
+                  className="profile-avatar"
+                  onClick={() => photoInput.current?.click()}
+                  aria-label="Add profile picture"
+                >
+                  {draft.avatar ? <img src={draft.avatar} alt="" /> : initial}
+                </button>
+              ) : (
+                <div className="profile-avatar" aria-hidden="true">
+                  {draft.avatar ? <img src={draft.avatar} alt="" /> : initial}
+                </div>
+              )}
+              {editing && (
+                <div className="profile-photo-actions">
+                  <button type="button" className="profile-photo-action" onClick={() => photoInput.current?.click()}>
+                    {draft.avatar ? "Change" : "Add photo"}
+                  </button>
+                  {draft.avatar && (
+                    <button type="button" className="profile-photo-action" onClick={() => updateField("avatar", "")}>
+                      Remove
+                    </button>
+                  )}
+                </div>
+              )}
+              <input
+                id="profile-photo"
+                ref={photoInput}
+                className="profile-photo-input"
+                type="file"
+                accept="image/*"
+                onChange={choosePhoto}
+              />
+            </div>
             <div className="profile-identity">
               <h2>{name || "Student"}</h2>
               <p>{subtitle}</p>

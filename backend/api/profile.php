@@ -18,6 +18,7 @@ $columns = [
     "pronouns" => "varchar(64) NOT NULL DEFAULT ''",
     "bio" => "varchar(2000) NOT NULL DEFAULT ''",
     "interests" => "varchar(1000) NOT NULL DEFAULT ''",
+    "avatar" => "mediumtext NULL",
 ];
 
 foreach ($columns as $name => $definition) {
@@ -69,11 +70,12 @@ function profile_row(array $row): array
         "pronouns" => $row["pronouns"],
         "bio" => $row["bio"],
         "interests" => array_values($interests),
+        "avatar" => $row["avatar"] ?? "",
     ];
 }
 
 $select = $conn->prepare(
-    "SELECT m.email, m.name, m.program, m.study_year, m.faculty, m.pronouns, m.bio, m.interests
+    "SELECT m.email, m.name, m.program, m.study_year, m.faculty, m.pronouns, m.bio, m.interests, m.avatar
      FROM tickets t
      JOIN members m ON m.email = t.member_email
      WHERE t.ticket = ?"
@@ -103,11 +105,26 @@ $studyYear = trim($_POST["studyYear"] ?? "");
 $faculty = trim($_POST["faculty"] ?? "");
 $pronouns = trim($_POST["pronouns"] ?? "");
 $bio = trim($_POST["bio"] ?? "");
+$avatar = $_POST["avatar"] ?? "";
 $decoded = json_decode($_POST["interests"] ?? "[]", true);
 
 if (!in_array($studyYear, $years, true) || !in_array($faculty, $faculties, true)) {
     http_response_code(400);
     echo json_encode(["success" => false, "message" => "Choose a year and faculty from the list"]);
+    $conn->close();
+    exit;
+}
+
+if ($avatar !== "" && !preg_match('#^data:image/jpeg;base64,[A-Za-z0-9+/=]+$#', $avatar)) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "The profile picture must be an image"]);
+    $conn->close();
+    exit;
+}
+
+if (strlen($avatar) > 300000) {
+    http_response_code(400);
+    echo json_encode(["success" => false, "message" => "That picture is too large"]);
     $conn->close();
     exit;
 }
@@ -133,10 +150,10 @@ $interestsJson = json_encode($interests);
 $update = $conn->prepare(
     "UPDATE members m
      JOIN tickets t ON t.member_email = m.email
-     SET m.program = ?, m.study_year = ?, m.faculty = ?, m.pronouns = ?, m.bio = ?, m.interests = ?
+     SET m.program = ?, m.study_year = ?, m.faculty = ?, m.pronouns = ?, m.bio = ?, m.interests = ?, m.avatar = ?
      WHERE t.ticket = ?"
 );
-$update->bind_param("sssssss", $program, $studyYear, $faculty, $pronouns, $bio, $interestsJson, $ticket);
+$update->bind_param("ssssssss", $program, $studyYear, $faculty, $pronouns, $bio, $interestsJson, $avatar, $ticket);
 
 if (!$update->execute()) {
     http_response_code(500);
@@ -160,5 +177,6 @@ echo json_encode([
         "pronouns" => $pronouns,
         "bio" => $bio,
         "interests" => $interests,
+        "avatar" => $avatar,
     ],
 ]);

@@ -43,17 +43,56 @@
   border-bottom: 1px solid #ece7e2;
 }
 
+.profile-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+}
+
 .profile-avatar {
   display: grid;
   place-items: center;
   width: 64px;
   height: 64px;
-  flex: none;
+  padding: 0;
+  overflow: hidden;
+  border: none;
   border-radius: 50%;
   background: #c81e3a;
   color: #ffffff;
   font-size: 28px;
   font-weight: 700;
+}
+
+button.profile-avatar {
+  cursor: pointer;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-photo-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.profile-photo-action {
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.profile-photo-input {
+  display: none;
 }
 
 .profile-identity {
