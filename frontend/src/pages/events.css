@@ -71,13 +71,12 @@
 }
 
 .events-status {
-  margin: 48px 0 0;
-  text-align: center;
-  color: #6b645c;
+  margin: 40px 0 0;
+  color: #171717;
 }
 
 .events-status-error {
-  color: #9f1239;
+  color: #ed1b2f;
 }
 
 .event-category {
@@ -157,6 +156,10 @@
   object-fit: cover;
 }
 
+.event-media-fallback {
+  background: #eceae4;
+}
+
 .event-body {
   padding-top: 14px;
 }
@@ -196,6 +199,8 @@
   fill: none;
   stroke: currentColor;
   stroke-width: 1.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
 }
 
 .event-description {
@@ -235,13 +240,13 @@
   font-weight: 600;
 }
 
-@media (max-width: 640px) {
+@media (max-width: 720px) {
   .events-main {
-    padding: 24px 12px 48px;
+    padding: 28px 20px 64px;
   }
 
   .events-main h1 {
-    font-size: 30px;
+    max-width: 11ch;
   }
 
   .event-filters {
