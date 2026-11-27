@@ -161,35 +161,40 @@ button.profile-avatar {
 }
 
 .profile-field label {
-  font-size: 14px;
+  color: #171717;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .profile-field input,
 .profile-field select {
   width: 100%;
   height: 44px;
-  border: 1px solid #e6e2de;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #1a1a1a;
-  padding: 0 12px;
+  border: 0;
+  border-bottom: 1px solid #e4dfd6;
+  border-radius: 0;
+  background: transparent;
+  color: #171717;
+  padding: 0;
   outline: none;
+}
+
+.profile-field select {
+  padding-right: 24px;
 }
 
 .profile-field input:focus,
 .profile-field select:focus {
-  border-color: #b7b1ab;
+  border-bottom-color: #171717;
 }
 
 .profile-field input:disabled,
 .profile-field select:disabled {
-  color: #374151;
-  background: #ffffff;
-}
-
-.profile-field input:disabled {
-  color: #4b5563;
+  color: #171717;
+  background: transparent;
+  opacity: 0.7;
 }
 
 .profile-chip {
