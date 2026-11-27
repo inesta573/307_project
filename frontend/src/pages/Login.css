@@ -46,7 +46,7 @@
 .login-main {
   display: flex;
   justify-content: center;
-  padding: 88px 16px 48px;
+  padding: 40px 16px 48px;
 }
 
 .login-card {
@@ -100,21 +100,22 @@
 .login-form input {
   width: 100%;
   height: 48px;
-  border: 1px solid #d3dae2;
-  border-radius: 999px;
-  padding: 0 18px;
-  background: #ffffff;
-  color: #1c2430;
-  font-size: 15px;
+  border: 0;
+  border-bottom: 1px solid #e4dfd6;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  color: #171717;
+  font-size: 16px;
   outline: none;
 }
 
 .login-form input::placeholder {
-  color: #c0c6ce;
+  color: #8a847c;
 }
 
 .login-form input:focus {
-  border-color: #8d97a3;
+  border-bottom-color: #171717;
 }
 
 .show-password {
@@ -124,36 +125,38 @@
   font-size: 14px;
 }
 
-.show-password input {
-  width: auto;
-  height: auto;
+.show-password input,
+.show-password input:focus {
+  width: 16px;
+  height: 16px;
   margin: 0;
   padding: 0;
-  border: none;
+  border: 0;
+  accent-color: #ed1b2f;
 }
 
 .login-form button {
-  align-self: center;
-  margin-top: 10px;
+  align-self: flex-start;
+  margin-top: 8px;
   height: 44px;
-  padding: 0 28px;
+  padding: 0 18px;
   border: none;
-  border-radius: 999px;
-  background: #2c3340;
+  border-radius: 0;
+  background: #ed1b2f;
   color: #ffffff;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .login-form button:hover {
-  background: #232933;
+  background: #c8102e;
 }
 
 .login-error {
   margin: 0;
-  text-align: center;
-  color: #b42318;
+  text-align: left;
+  color: #ed1b2f;
   font-size: 14px;
 }
 
