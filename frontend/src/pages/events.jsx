@@ -1,45 +1,109 @@
+
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 
 function Events() {
   const navigate = useNavigate();
-  const [name] = useState(() => localStorage.getItem("name"));
+  const name = localStorage.getItem("name");
+
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    //redirect if user is not logged in
-    const ticket = localStorage.getItem("ticket");
-
-    if (!ticket) {
+    if (!localStorage.getItem("ticket")) {
       navigate("/login", { replace: true });
+      return;
     }
+
+    async function fetchEvents() {
+      try {
+        const response = await fetch("/api/events.php");
+
+        const data = await response.json();
+
+        setEvents(data.events);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchEvents();
   }, [navigate]);
 
-  function handleLogout() {
-    //clear saved user information
-    localStorage.removeItem("ticket");
-    localStorage.removeItem("name");
-    localStorage.removeItem("email");
+  const groupedEvents = events.reduce((groups, event) => {
+    if (!groups[event.category]) {
+      groups[event.category] = [];
+    }
 
-    navigate("/login", { replace: true });
-  }
+    groups[event.category].push(event);
+    return groups;
+  }, {});
 
   return (
     <div>
       <Header />
 
-      <main style={{ padding: 32 }}>
+      <main style={{
+        padding: "32px",
+        maxWidth: "1200px",
+        margin: "auto"
+      }}>
         <h1>Welcome, {name}!</h1>
+        <h2>Discover Events</h2>
+        <p>Find events around campus, put yourself out there, and get ready to connect.</p>
 
-        <h2>Upcoming Events</h2>
-        <p>Discover events happening around campus.</p>
+        {!loading && !error && Object.entries(groupedEvents).map(
+          ([category, categoryEvents]) => (
+            <section key={category} style={{ marginTop: "36px" }}>
+              <h2>{category}</h2>
 
-        <button onClick={handleLogout}>
-          Logout
-        </button>
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                gap: "24px"
+              }}>
+                {categoryEvents.map((event) => (
+                  <article
+                    key={event.id}
+                    style={{
+                      border: "1px solid #ddd",
+                      borderRadius: "12px",
+                      overflow: "hidden"
+                    }}
+                  >
+                    {event.image_url && (
+                      <img
+                        src={event.image_url}
+                        alt={event.title}
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                        style={{
+                          width: "100%",
+                          height: "180px",
+                          objectFit: "cover"
+                        }}
+                      />
+                    )}
+
+                    <div style={{ padding: "16px" }}>
+                      <h3>{event.title}</h3>
+                      <p>{event.description}</p>
+                      <p><strong>Location:</strong> {event.location}</p>
+                      <p><strong>When:</strong> {event.start_time}</p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )
+        )}
       </main>
     </div>
   );
 }
-
 export default Events;
