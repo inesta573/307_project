@@ -67,6 +67,7 @@ function Profile() {
   const [saved, setSaved] = useState(() => readStoredProfile() || emptyProfile);
   const [draft, setDraft] = useState(() => readStoredProfile() || emptyProfile);
   const [editing, setEditing] = useState(false);
+  const [previewing, setPreviewing] = useState(false);
   const [interestDraft, setInterestDraft] = useState("");
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -273,28 +274,51 @@ function Profile() {
               />
             </div>
             <div className="profile-identity">
-              <h2>{name || "Student"}</h2>
-              <p>{subtitle}</p>
+              <h2>{name || "Student"}{previewing && draft.pronouns ? ` · ${draft.pronouns}` : ""}</h2>
+              <p>{previewing ? [draft.studyYear, draft.program, draft.faculty].filter(Boolean).join(" · ") || "McGill student" : subtitle}</p>
               <p>0 hosted · 0 attended</p>
             </div>
             <div className="profile-actions">
-              {editing ? (
+              {previewing ? (
+                <button type="button" className="profile-preview" onClick={() => setPreviewing(false)}>
+                  Close preview
+                </button>
+              ) : editing ? (
                 <>
                   <button type="button" className="profile-cancel" onClick={cancelEditing}>
                     Cancel
+                  </button>
+                  <button type="button" className="profile-preview" onClick={() => setPreviewing(true)}>
+                    Preview
                   </button>
                   <button type="submit" form="profile-form" className="profile-edit" disabled={saving}>
                     {saving ? "Saving" : "Save"}
                   </button>
                 </>
               ) : (
-                <button type="button" className="profile-edit" onClick={startEditing}>
-                  Edit Profile
-                </button>
+                <>
+                  <button type="button" className="profile-preview" onClick={() => setPreviewing(true)}>
+                    Preview
+                  </button>
+                  <button type="button" className="profile-edit" onClick={startEditing}>
+                    Edit Profile
+                  </button>
+                </>
               )}
             </div>
           </div>
 
+          {previewing ? (
+            <div className="profile-read">
+              <p>{draft.bio || "No bio yet."}</p>
+              <div className="profile-chips">
+                {(draft.interests.length ? draft.interests : ["No interests yet."]).map((interest) => (
+                  <span className="profile-chip" key={interest}>{interest}</span>
+                ))}
+              </div>
+              <p>{email}</p>
+            </div>
+          ) : (
           <form id="profile-form" className="profile-form" onSubmit={saveProfile}>
             <div className="profile-field">
               <label htmlFor="profile-email">Email</label>
@@ -407,6 +431,7 @@ function Profile() {
             {error && <p className="profile-message error">{error}</p>}
             {notice && <p className="profile-message saved">{notice}</p>}
           </form>
+          )}
         </section>
       </main>
     </div>
