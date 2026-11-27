@@ -8,11 +8,15 @@ function eventDate(date) {
   return new Date(date.replace(" ", "T"));
 }
 
-function formatDate(date) {
-  return eventDate(date).toLocaleString([], {
-    weekday: "short",
+function formatKickerDate(date) {
+  return eventDate(date).toLocaleDateString([], {
     month: "short",
-    day: "numeric",
+    day: "numeric"
+  });
+}
+
+function formatTime(date) {
+  return eventDate(date).toLocaleTimeString([], {
     hour: "numeric",
     minute: "2-digit"
   });
@@ -25,9 +29,12 @@ function isSameDay(date, day) {
     && eventDay.getDate() === day.getDate();
 }
 
-function eventMeta(event) {
-  const when = event.start_time ? formatDate(event.start_time) : "";
-  return [event.location, when].filter(Boolean).join(" · ");
+function EventArrow() {
+  return (
+    <svg className="event-arrow" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" />
+    </svg>
+  );
 }
 
 function EventCard({ event }) {
@@ -49,9 +56,29 @@ function EventCard({ event }) {
       </div>
 
       <div className="event-body">
-        <h3>{event.title}</h3>
+        <p className="event-kicker">
+          {event.start_time && <span>{formatKickerDate(event.start_time)}</span>}
+          {event.category && <span>{event.category}</span>}
+        </p>
+        <div className="event-title-row">
+          <h3>{event.title}</h3>
+          <EventArrow />
+        </div>
         {event.description && <p className="event-description">{event.description}</p>}
-        <p className="event-meta">{eventMeta(event)}</p>
+        <dl className="event-facts">
+          {event.location && (
+            <div>
+              <dt>Location</dt>
+              <dd>{event.location}</dd>
+            </div>
+          )}
+          {event.start_time && (
+            <div>
+              <dt>Time</dt>
+              <dd>{formatTime(event.start_time)}</dd>
+            </div>
+          )}
+        </dl>
       </div>
     </article>
   );
