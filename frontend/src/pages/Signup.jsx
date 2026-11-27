@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../components/Header.css";
 import "./Login.css";
 
 const mcgillEmail = /^[^\s@]+@mail\.mcgill\.ca$/i;
@@ -52,22 +53,18 @@ function Signup() {
   return (
     <div className="login-page">
       <header className="site-header">
-        <div className="brand">CampusConnect</div>
-        <nav className="site-nav">
-          <span className="nav-link active">Discover</span>
-          <span className="nav-link">Create Event</span>
-        </nav>
+        <div className="site-header-inner">
+          <Link to="/signup" className="site-logo">CampusConnect</Link>
+          <nav className="site-nav">
+            <Link to="/login">Log in</Link>
+          </nav>
+        </div>
       </header>
 
       <main className="login-main">
         <section className="login-card">
-          <h1>
-            Welcome to
-            <br />
-            CampusConnect
-          </h1>
-
-          <h2>Sign Up</h2>
+          <h1 className="login-title">Create an account.</h1>
+          <p className="login-intro">Use your McGill email to get started.</p>
 
           <form className="login-form" onSubmit={handleSignup}>
             <input
