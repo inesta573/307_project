@@ -40,27 +40,34 @@
 
 .event-filters {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 28px;
+  gap: 28px;
+  margin-top: 32px;
+  overflow-x: auto;
+  border-bottom: 1px solid #e4dfd6;
+  scrollbar-width: none;
+}
+
+.event-filters::-webkit-scrollbar {
+  display: none;
 }
 
 .event-filter {
-  border: 1px solid #e6e6e6;
-  background: #ffffff;
-  color: #1a1a1a;
-  border-radius: 999px;
-  padding: 8px 18px;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0 0 12px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #171717;
   font: inherit;
   font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .event-filter.is-selected {
-  background: #c2253c;
-  border-color: #c2253c;
-  color: #ffffff;
+  color: #ed1b2f;
+  border-bottom-color: #ed1b2f;
 }
 
 .events-status {
@@ -166,5 +173,9 @@
 
   .events-main h1 {
     font-size: 30px;
+  }
+
+  .event-filters {
+    gap: 20px;
   }
 }
