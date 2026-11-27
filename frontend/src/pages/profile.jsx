@@ -26,12 +26,36 @@ const emptyProfile = {
   interests: [],
 };
 
+function readStoredProfile() {
+  const email = localStorage.getItem("email") || "";
+  try {
+    const stored = JSON.parse(localStorage.getItem("profile") || "null");
+    if (!stored || stored.email !== email) {
+      return null;
+    }
+    return {
+      ...emptyProfile,
+      ...stored,
+      interests: Array.isArray(stored.interests) ? stored.interests : [],
+    };
+  } catch {
+    return null;
+  }
+}
+
+function writeStoredProfile(profile) {
+  localStorage.setItem("profile", JSON.stringify({
+    ...profile,
+    email: localStorage.getItem("email") || "",
+  }));
+}
+
 function Profile() {
   const navigate = useNavigate();
   const [name, setName] = useState(() => localStorage.getItem("name") || "");
   const [email, setEmail] = useState(() => localStorage.getItem("email") || "");
-  const [saved, setSaved] = useState(emptyProfile);
-  const [draft, setDraft] = useState(emptyProfile);
+  const [saved, setSaved] = useState(() => readStoredProfile() || emptyProfile);
+  const [draft, setDraft] = useState(() => readStoredProfile() || emptyProfile);
   const [editing, setEditing] = useState(false);
   const [interestDraft, setInterestDraft] = useState("");
   const [error, setError] = useState("");
@@ -42,6 +66,10 @@ function Profile() {
     const ticket = localStorage.getItem("ticket");
     if (!ticket) {
       navigate("/login", { replace: true });
+      return;
+    }
+
+    if (readStoredProfile()) {
       return;
     }
 
@@ -74,6 +102,7 @@ function Profile() {
         setEmail(data.profile.email || "");
         setSaved(profile);
         setDraft(profile);
+        writeStoredProfile(profile);
       } catch {
         if (!cancelled) {
           setError("Could not load your profile. The database tunnel may be closed.");
@@ -153,6 +182,7 @@ function Profile() {
       };
       setSaved(profile);
       setDraft(profile);
+      writeStoredProfile(profile);
       setEditing(false);
       setNotice("Profile saved.");
     } catch {

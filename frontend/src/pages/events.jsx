@@ -20,6 +20,7 @@ function Events() {
     localStorage.removeItem("ticket");
     localStorage.removeItem("name");
     localStorage.removeItem("email");
+    localStorage.removeItem("profile");
 
     navigate("/login", { replace: true });
   }
