@@ -11,8 +11,11 @@ function Events() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Check login and retrieve events
   useEffect(() => {
-    if (!localStorage.getItem("ticket")) {
+    const ticket = localStorage.getItem("ticket");
+
+    if (!ticket) {
       navigate("/login", { replace: true });
       return;
     }
@@ -20,9 +23,7 @@ function Events() {
     async function fetchEvents() {
       try {
         const response = await fetch("/api/events.php");
-
         const data = await response.json();
-
         setEvents(data.events);
       } catch (err) {
         setError(err.message);
@@ -42,6 +43,17 @@ function Events() {
     groups[event.category].push(event);
     return groups;
   }, {});
+
+  // Format event date and time for nicer presentation for user
+  function formatDate(date) {
+    return new Date(date.replace(" ", "T")).toLocaleString([], {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit"
+    });
+  }
 
   return (
     <div>
@@ -94,7 +106,7 @@ function Events() {
                       <h3>{event.title}</h3>
                       <p>{event.description}</p>
                       <p><strong>Location:</strong> {event.location}</p>
-                      <p><strong>When:</strong> {event.start_time}</p>
+                      <p><strong>When:</strong> {formatDate(event.start_time)}</p>
                     </div>
                   </article>
                 ))}
@@ -106,4 +118,5 @@ function Events() {
     </div>
   );
 }
+
 export default Events;
